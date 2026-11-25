@@ -16,6 +16,31 @@ Il server ascolta sulla porta 8080. Al primo avvio crea dei dati di prova:
 
 Per ripartire da zero basta fermare il server e cancellare la cartella `data/`.
 
+## Ambiente di sviluppo e scelte tecniche
+
+Il progetto è stato sviluppato su un **Chromebook con Linux** (ambiente di
+sviluppo Linux di ChromeOS) e provato su un **iPhone**.
+
+- **Perché l'app è usata dal browser e non installata.** Per installare
+  un'app su iPhone servono un Mac (Xcode) e un account sviluppatore Apple,
+  che non ho. Per questo l'app Flutter è compilata per il **web**
+  (`flutter build web`): è lo stesso codice Flutter, che sull'iPhone si apre
+  in Safari (e si può aggiungere alla schermata Home come un'app).
+- **Chi serve l'app.** I file compilati sono nella cartella `web/` e li
+  serve questo stesso server: app e API stanno allo stesso indirizzo.
+- **Perché il tunnel.** Il telefono non riusciva a raggiungere direttamente
+  il server dentro l'ambiente Linux del Chromebook (port forwarding di
+  ChromeOS non funzionante). Ho quindi usato un tunnel Cloudflare
+  (`cloudflared tunnel --url http://localhost:8080`), che dà un indirizzo
+  `https://....trycloudflare.com` raggiungibile dal telefono.
+  Il tunnel trasporta solo il traffico: **il server, i dati (file JSON) e i
+  curriculum restano sul mio computer** e sono gestiti dal codice di questo
+  repository. Non si usano servizi esterni già pronti (tipo Firebase o
+  Supabase) per la logica o per i dati.
+- **Compilazione dell'app.** Il Chromebook non ha abbastanza memoria per
+  compilare Flutter, quindi la compilazione web la esegue GitHub Actions nel
+  repository dell'app; il risultato viene copiato in `web/`.
+
 ## Struttura
 
 ```
@@ -54,7 +79,7 @@ Codici usati: 200/201/204 ok, 400 richiesta malformata, 401 non autenticato,
 
 ## App web e accesso dal telefono
 
-L'app Flutter (repository separato) viene compilata per il web con
+L'app Flutter (repository separato `bacheca-app-LLR`) viene compilata per il web con
 `flutter build web`; il contenuto di `build/web` va copiato nella cartella
 `web/` di questo progetto. Il server la mostra aprendo il suo indirizzo
 nel browser (es. `http://localhost:8080`).
