@@ -1,0 +1,12 @@
+{
+  "name": "Bacheca Lavoro",
+  "short_name": "Bacheca",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#1565C0",
+  "description": "Bacheca di annunci di lavoro",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": []
+}
